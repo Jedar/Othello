@@ -1,6 +1,7 @@
 package player;
 
 import chess.Grid;
+import writer.Inputable;
 import writer.Printer;
 
 import java.util.ArrayList;
@@ -16,5 +17,10 @@ public class Player extends Mover{
     @Override
     public Grid move(ArrayList<Grid> options, Printer printer) {
         return printer.move(this);
+    }
+
+    @Override
+    public Grid move(ArrayList<Grid> options, Inputable input) {
+        return input.move(this);
     }
 }

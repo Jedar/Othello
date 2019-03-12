@@ -1,6 +1,7 @@
 package player;
 
 import chess.Grid;
+import writer.Inputable;
 import writer.Printer;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public abstract class Mover {
     ArrayList<Grid> list;
 
     public abstract Grid move(ArrayList<Grid> options, Printer printer);
+
+    public abstract Grid move(ArrayList<Grid> options, Inputable input);
 
     public String getName(){
         return name;

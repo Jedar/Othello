@@ -6,7 +6,7 @@ import player.Mover;
 
 import java.util.Scanner;
 
-public class Printer {
+public class Printer implements Inputable {
     private Grid[][] map;
     private String[] characters = {"#","X","O"};
     private Scanner scanner;
@@ -67,6 +67,12 @@ public class Printer {
 
     public void noMove(Mover player){
         print(characters[player.getId()] + " player has no valid move. \n");
+    }
+
+    @Override
+    public void setChessboard(Chessboard chessboard) {
+        //nothing to do
+        //TODO:merge two method
     }
 
     public void win(Mover winer, Mover loser, int type){
@@ -140,6 +146,15 @@ public class Printer {
 
     public void printScore(Mover p1, Mover p2){
         print(characters[p1.getId()] + " : " + characters[p2.getId()] + " = " + p1.getList().size() + " : " + p2.getList().size()+"\n");
+    }
+
+    @Override
+    public void show(String msg) {
+        print(msg);
+    }
+
+    public String getCharecter(int state){
+        return characters[state];
     }
 
     private void print(String string){

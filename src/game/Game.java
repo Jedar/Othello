@@ -10,11 +10,10 @@ public abstract class Game {
     Chessboard chessboard;
     ArrayList<Grid> option;
     int times;
-    Printer printer;
     private long start;
     private long end;
 
-    public abstract void start();
+    public abstract void startGame();
 
     public int getTotalTime(){
         return (int)(end - start)/1000;

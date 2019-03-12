@@ -6,6 +6,7 @@ import player.Mover;
 import player.Player;
 import player.Robot;
 import rule.ReversiRule;
+import writer.Inputable;
 import writer.LogWriter;
 import writer.Printer;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class ReversiGame extends Game {
     private Mover[] players;
     private ReversiRule rule;
+    private Inputable printer;
 
     public ReversiGame(){
         times = 0;
@@ -22,7 +24,14 @@ public class ReversiGame extends Game {
         option = new ArrayList<>();
     }
 
-    public void start(){
+    public ReversiGame(Inputable printer){
+        this.printer = printer;
+        times = 0;
+        players = new Mover[2];
+        option = new ArrayList<>();
+    }
+
+    public void startGame(){
         startTime();
 
         initializeGame();
@@ -74,7 +83,14 @@ public class ReversiGame extends Game {
             }
 
             if (!noMove){
-                position = cur.move(option,printer);
+                while ((position = cur.move(option,printer)) == null){
+                    try {
+                        Thread.sleep(500);
+                    }
+                    catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
                 if (!option.contains(position)){
                     over = true;
                     printer.win(rival,cur,3);
@@ -99,11 +115,13 @@ public class ReversiGame extends Game {
         int size;
         size = printer.getSize();
         chessboard = new Chessboard(size);
+        printer.setChessboard(chessboard);
 
         //initialize player
         int cptId = printer.whoFirst();
         players[cptId - 1] = new Robot("Computer",cptId);
         players[(cptId%2)] = new Player("Human",(cptId%2) + 1);
+//        players[(cptId%2)] = new Robot("Human",(cptId%2) + 1);
 
         printer.setMap(chessboard.getMap());
         rule = new ReversiRule(chessboard);

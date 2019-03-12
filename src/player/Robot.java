@@ -1,6 +1,7 @@
 package player;
 
 import chess.Grid;
+import writer.Inputable;
 import writer.Printer;
 
 import java.util.ArrayList;
@@ -15,6 +16,22 @@ public class Robot extends Mover {
 
     @Override
     public Grid move(ArrayList<Grid> options, Printer printer) {
+        Grid pos = move(options);
+        char x = (char)('a'+pos.getX());
+        char y = (char)('a'+pos.getY());
+        if (printer == null)
+        System.out.println("Computer place "+printer.getCharecter(id)+" at "+x+y);
+        return pos;
+    }
+
+    private Grid move(ArrayList<Grid> options){
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         Grid pos = null;
         int number = 0;
 
@@ -36,9 +53,13 @@ public class Robot extends Mover {
         if (pos == null){
             return null;
         }
-        char x = (char)('a'+pos.getX());
-        char y = (char)('a'+pos.getY());
-        System.out.println("Computer place at "+x+y);
         return pos;
     }
+
+    @Override
+    public Grid move(ArrayList<Grid> options, Inputable input) {
+        return move(options);
+    }
+
+
 }

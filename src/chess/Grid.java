@@ -1,6 +1,6 @@
 package chess;
 
-public class Grid {
+public class Grid implements Stateful {
     private int x;
     private int y;
 
