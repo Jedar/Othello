@@ -14,8 +14,6 @@ public abstract class Mover {
     //grid of player
     ArrayList<Grid> list;
 
-    public abstract Grid move(ArrayList<Grid> options, Printer printer);
-
     public abstract Grid move(ArrayList<Grid> options, Inputable input);
 
     public String getName(){

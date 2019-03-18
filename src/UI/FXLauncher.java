@@ -19,8 +19,7 @@ import writer.Inputable;
 public class FXLauncher extends Application implements Inputable {
     private double screenHeight = 800;
     private double screenWidth = 800;
-    private int width = 10;
-    private int height = 10;
+    private int size = 4;
     private Stateful[][] map;
     private Ellipse[][] ellipses;
     private Grid clickGrid = null;
@@ -31,8 +30,7 @@ public class FXLauncher extends Application implements Inputable {
 
     private void initializeMap(Stateful[][] map){
         this.map = map;
-        width = map.length;
-        height = map[0].length;
+        size = map.length;
     }
 
     private void freshBoard(){
@@ -52,30 +50,32 @@ public class FXLauncher extends Application implements Inputable {
 
         alert = new Alert(Alert.AlertType.INFORMATION);
 
-        ellipses = new Ellipse[width][height];
+        ellipses = new Ellipse[size][size];
 
         Rectangle r;
         Ellipse ellipse;
         double left = 50, top = 50;
-        double size = 50;
+        double gridSize = 50;
         double radius = 15;
 
-        for (int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++){
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
                 r = new Rectangle();
-                r.setX(left + i * size);
-                r.setY(top + j * size);
-                r.setWidth(size);
-                r.setHeight(size);
+                r.setX(left + j * gridSize);
+                r.setY(top + i * gridSize);
+                r.setWidth(gridSize);
+                r.setHeight(gridSize);
                 r.setFill(Color.LIGHTGRAY);
                 r.setStroke(Color.DARKGRAY);
 
                 ellipse = new Ellipse();
-                ellipse.setCenterX(left + size/2 + i * size);
-                ellipse.setCenterY(top + size/2 + j * size);
+                ellipse.setCenterX(left + gridSize/2 + j * gridSize);
+                ellipse.setCenterY(top + gridSize/2 + i * gridSize);
                 ellipse.setRadiusX(radius);
                 ellipse.setRadiusY(radius);
                 ellipses[i][j] = ellipse;
+                ellipse.setFill(Color.LIGHTGRAY);
+                ellipse.setStroke(Color.LIGHTGRAY);
 
                 root.getChildren().add(r);
                 root.getChildren().add(ellipse);
@@ -89,13 +89,13 @@ public class FXLauncher extends Application implements Inputable {
             if (sceneX < 0 || sceneY < 0){
                 return;
             }
-            int x = (int)(sceneX/size);
-            int y = (int)(sceneY/size);
-            if (x < 0 || x > width || y < 0 || y > height){
+            int x = (int)(sceneX/gridSize);
+            int y = (int)(sceneY/gridSize);
+            if (x < 0 || x > size || y < 0 || y > size){
                 clickGrid = null;
             }
             else{
-                clickGrid = chessboard.get(x,y);
+                clickGrid = chessboard.get(y,x);
             }
         });
 
@@ -163,7 +163,7 @@ public class FXLauncher extends Application implements Inputable {
 
     @Override
     public int getSize() {
-        return 10;
+        return size;
     }
 
     @Override
@@ -193,12 +193,17 @@ public class FXLauncher extends Application implements Inputable {
     }
 
     private void alertMessage(String msg){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                alert.setContentText(msg);
-                alert.show();
-            }
+        Platform.runLater(() -> {
+            alert.setContentText(msg);
+            alert.show();
         });
+    }
+
+    @Override
+    public void stop() throws Exception {
+        if (gameThread.isAlive()){
+            gameThread.interrupt();
+        }
+        super.stop();
     }
 }

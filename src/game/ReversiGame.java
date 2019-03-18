@@ -63,23 +63,16 @@ public class ReversiGame extends Game {
             if (option.isEmpty()){
                 if (noMove){
                     over = true;
-                    int p1Num = players[0].getList().size();
-                    int p2Num = players[1].getList().size();
-                    if (p1Num > p2Num){
-                        printer.win(players[0],players[1],1);
-                    }
-                    else if (p1Num < p2Num){
-                        printer.win(players[1],players[0],1);
-                    }
-                    else {
-                        printer.draw(players[0],players[1]);
-                    }
+                    gameOver();
                     continue;
                 }
                 else {
                     noMove = true;
                     printer.noMove(cur);
                 }
+            }
+            else {
+                noMove =  false;
             }
 
             if (!noMove){
@@ -88,7 +81,7 @@ public class ReversiGame extends Game {
                         Thread.sleep(500);
                     }
                     catch (InterruptedException e){
-                        e.printStackTrace();
+                        return;
                     }
                 }
                 if (!option.contains(position)){
@@ -148,6 +141,20 @@ public class ReversiGame extends Game {
             }
         }
         return false;
+    }
+
+    private void gameOver(){
+        int p1Num = players[0].getList().size();
+        int p2Num = players[1].getList().size();
+        if (p1Num > p2Num){
+            printer.win(players[0],players[1],1);
+        }
+        else if (p1Num < p2Num){
+            printer.win(players[1],players[0],1);
+        }
+        else {
+            printer.draw(players[0],players[1]);
+        }
     }
 
     private Mover getAnther(Mover mover){

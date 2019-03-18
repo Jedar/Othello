@@ -15,12 +15,11 @@ public class Robot extends Mover {
     }
 
     @Override
-    public Grid move(ArrayList<Grid> options, Printer printer) {
+    public Grid move(ArrayList<Grid> options, Inputable inputable) {
         Grid pos = move(options);
         char x = (char)('a'+pos.getX());
         char y = (char)('a'+pos.getY());
-        if (printer == null)
-        System.out.println("Computer place "+printer.getCharecter(id)+" at "+x+y);
+        System.out.println("Computer place at "+x+y);
         return pos;
     }
 
@@ -54,11 +53,6 @@ public class Robot extends Mover {
             return null;
         }
         return pos;
-    }
-
-    @Override
-    public Grid move(ArrayList<Grid> options, Inputable input) {
-        return move(options);
     }
 
 
